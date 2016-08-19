@@ -1,3 +1,4 @@
+combined with slick, made a frame slides 
 # Overview
 
 Forked from the excelent jsgif project (https://github.com/shachaf/jsgif), which was implemented as a bookmarklet to manipulate animated gifs (http://slbkbs.org/jsgif).
