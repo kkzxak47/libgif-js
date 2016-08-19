@@ -3,8 +3,13 @@
 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+
+		<link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
 		<script type="text/javascript" src="./libgif.js"></script>
 		<script type="text/javascript" src="./rubbable.js"></script>
+		<script type="text/javascript" src="./jquery-2.2.1.js"></script>
+
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 		<title>
 			Example gif
@@ -14,30 +19,82 @@
 	<body>
 		<center>
 			<h1>Example with controls and no auto-play</h1>
-			<img id="example1" src="./example_gifs/rub_test_preview.jpg" rel:animated_src="./example_gifs/rub_test.gif" rel:auto_play="0" width="467" height="375" />
+
+			<img id="example1" rel:animated_src="./example_gifs/cat-jumps-off-ledge.gif" rel:auto_play="0" width="467" height="375" />
 			<br>
 			<script type="text/javascript">
-				var sup1 = new SuperGif({ gif: document.getElementById('example1') } );
-				sup1.load();
+				var sup1;
+				function test() {
+					var length = sup1.get_length();
+					// var length = sup1.get_length();
+					var i, canvas;
+					var container = document.getElementById('container');
+					for (i = 0; i < length; i++) {
+						canvas = cloneCanvas(sup1.get_canvas());
+						with_number = $("<div><div>"+(i+1)+"</div></div>");
+						with_number.prepend($(canvas))
+						$(container).append(with_number);
+						with_number.on('click', function (ev) {
+							var destCtx = sup1.get_canvas().getContext('2d');
+							destCtx.drawImage($(this).find('canvas')[0], 0, 0);
+						});
+
+						sup1.move_to(i);
+					}
+					sup1.move_to(0);
+					$(document).ready(function () {
+						$("#container").slick({
+							infinite: true,
+							slidesToShow: 4,
+							slidesToScroll: 4,
+							dots: true,
+							arrows: true
+						})
+					});
+				};
+				sup1 = new SuperGif({
+					gif: document.getElementById('example1'),
+					loop_mode: false,
+					auto_play: false
+				});
+				sup1.load(test);
+
+				function cloneCanvas(oldCanvas) {
+				    //create a new canvas
+				    var newCanvas = document.createElement('canvas');
+				    var context = newCanvas.getContext('2d');
+
+				    //set dimensions
+				    newCanvas.width = oldCanvas.width;
+				    newCanvas.height = oldCanvas.height;
+
+				    //apply the old canvas to the new one
+				    context.drawImage(oldCanvas, 0, 0);
+
+				    //return the new canvas
+				    return newCanvas;
+				}
+
 			</script>
 			<a href="javascript:;" onmousedown="sup1.pause(); return false;">Pause</a> |
 			<a href="javascript:;" onmousedown="sup1.play(); return false;">Play</a> |
 			<a href="javascript:;" onmousedown="sup1.move_to(0); return false;">Restart</a> |
 			<a href="javascript:;" onmousedown="sup1.move_relative(1); return false;">Step forward</a> |
 			<a href="javascript:;" onmousedown="sup1.move_relative(-1); return false;">Step back</a>
+			<div id="container"></div>
 
-			<h1>Example with rubbing and auto-play on</h1>
-			<img id="example2" src="./example_gifs/rub_test.gif" rel:auto_play="1" width="467" height="375" rel:rubbable="1" />
+			<!-- <h1>Example with rubbing and auto-play on</h1>
+			<img id="example2" src="./example_gifs/16080912178832553f108791a4.gif" rel:auto_play="1" width="467" height="375" rel:rubbable="1" />
 			<br>
 			<script type="text/javascript">
 				var sup2 = new RubbableGif({ gif: document.getElementById('example2') } );
 				sup2.load();
-			</script>
+			</script> -->
 
 			<br><br>
 			<p>Image via <a href="http://mlkshk.com/p/IP08">mlkshk</a></p>
 		</center>
-
+	<script type="text/javascript" src="slick/slick.min.js"></script>
 	</body>
 
 </html>
