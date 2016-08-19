@@ -106,9 +106,11 @@
 			</script> -->
 
 			<br>
+
 			<span>your gif here</span>
 			<input type="file" id="files" />
-			<img id="example2" />
+			<div id="localGifDiv">
+			</div>
 			<br>
 
 			<a href="javascript:;" onmousedown="sup2.pause(); return false;">Pause</a> |
@@ -121,25 +123,33 @@
 			<br>
 			<script>
 				var sup2;
+				var $localGifDiv = $("#localGifDiv");
+				var $container2 = $("#container2");
 				document.getElementById("files").onchange = function () {
-				var reader = new FileReader();
-				reader.onload = function (e) {
-				    // get loaded data and render thumbnail.
-				    var theImage = document.getElementById("example2");
-				    theImage.src = e.target.result;
+					$localGifDiv.html('');
+					$container2.html('');
+					$container2.removeAttr('class');
+					$container2.removeAttr('role');
+					var exampleGif = $("<img id=\"example2\" />");
+					$localGifDiv.append(exampleGif);
+					var reader = new FileReader();
+					reader.onload = function (e) {
+					    // get loaded data and render thumbnail.
+					    var theImage = document.getElementById("example2");
+					    theImage.src = e.target.result;
 
-					sup2 = new SuperGif({
-						gif: theImage,
-						loop_mode: false,
-						auto_play: false
-					});
-					sup2.load(function () {
-						makeSlides(sup2, $("#container2"));
-					});
-				};
+						sup2 = new SuperGif({
+							gif: theImage,
+							loop_mode: false,
+							auto_play: false
+						});
+						sup2.load(function () {
+							makeSlides(sup2, $container2);
+						});
+					};
 
-				// read the image file as a data URL.
-				reader.readAsDataURL(this.files[0]);
+					// read the image file as a data URL.
+					reader.readAsDataURL(this.files[0]);
 				};
 			</script>
 		</center>
