@@ -14,6 +14,13 @@
 		<title>
 			Example gif
 		</title>
+		<style>
+			body {
+				width: 90%;
+				margin: 0 auto;
+				background-color: #3498DB;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -27,16 +34,19 @@
 				function test() {
 					var length = sup1.get_length();
 					// var length = sup1.get_length();
-					var i, canvas;
-					var container = document.getElementById('container');
+					var i, canvas, slide, num;
+					var container = $("#container");
 					for (i = 0; i < length; i++) {
 						canvas = cloneCanvas(sup1.get_canvas());
-						with_number = $("<div><div>"+(i+1)+"</div></div>");
-						with_number.prepend($(canvas))
-						$(container).append(with_number);
-						with_number.on('click', function (ev) {
+						slide = $("<div>");
+						num = $("<div>"+(i+1)+"</div>");
+						slide.append($(canvas));
+						slide.append(num);
+						container.append(slide);
+						slide.on('click', {idx: i}, function (ev) {
 							var destCtx = sup1.get_canvas().getContext('2d');
 							destCtx.drawImage($(this).find('canvas')[0], 0, 0);
+							sup1.move_to(ev.data.idx);
 						});
 
 						sup1.move_to(i);
@@ -81,8 +91,9 @@
 			<a href="javascript:;" onmousedown="sup1.move_to(0); return false;">Restart</a> |
 			<a href="javascript:;" onmousedown="sup1.move_relative(1); return false;">Step forward</a> |
 			<a href="javascript:;" onmousedown="sup1.move_relative(-1); return false;">Step back</a>
+			<br>
+			<h1>Carousel Example</h1>
 			<div id="container"></div>
-
 			<!-- <h1>Example with rubbing and auto-play on</h1>
 			<img id="example2" src="./example_gifs/16080912178832553f108791a4.gif" rel:auto_play="1" width="467" height="375" rel:rubbable="1" />
 			<br>
